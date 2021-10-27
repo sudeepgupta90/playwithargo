@@ -1,1 +1,0 @@
-{"appName":"monitoring","userGivenName":"monitoring","destNamespace":"default","destServer":"https://kubernetes.default.svc","srcPath":"apps/monitoring/overlays/neo","srcRepoURL":"https://github.com/sudeepgupta90/playwithargo.git","srcTargetRevision":"","labels":null}
