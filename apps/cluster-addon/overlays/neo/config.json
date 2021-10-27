@@ -1,0 +1,1 @@
+{"appName":"cluster-addon","userGivenName":"cluster-addon","destNamespace":"default","destServer":"https://kubernetes.default.svc","srcPath":"apps/cluster-addon/overlays/neo","srcRepoURL":"https://github.com/sudeepgupta90/playwithargo.git","srcTargetRevision":"","labels":null}
