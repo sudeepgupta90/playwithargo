@@ -34,10 +34,8 @@ spec:
   generators:
   - list:
       elements:
-        - namespace: data-mlp-airflow
-          url: https://kubernetes.default.svc
-        - namespace: data-ods-airflow
-          url: https://kubernetes.default.svc
+      - namespace: data-tools-airflow
+      - namespace: data-ods-airflow
   template:
     metadata:
       labels:
@@ -48,7 +46,7 @@ spec:
     spec:
       destination:
         namespace: '{{namespace}}'
-        server: '{{url}}'
+        server: https://kubernetes.default.svc
       project: airflow
       source:
         path: helm-charts/airflow/
