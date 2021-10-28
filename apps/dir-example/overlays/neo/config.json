@@ -1,0 +1,1 @@
+{"appName":"dir-example","userGivenName":"dir-example","destNamespace":"default","destServer":"https://kubernetes.default.svc","srcPath":"apps/dir-example/overlays/neo","srcRepoURL":"https://github.com/sudeepgupta90/playwithargo.git","srcTargetRevision":"","labels":null}
