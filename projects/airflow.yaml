@@ -32,49 +32,51 @@ metadata:
   namespace: argocd
 spec:
   generators:
-  - git:
-      files:
-      - path: apps/**/airflow/config.json
-      repoURL: https://github.com/sudeepgupta90/playwithargo.git
-      requeueAfterSeconds: 20
-      revision: ""
-      template:
-        metadata: {}
-        spec:
-          destination: {}
-          project: ""
-          source:
-            repoURL: ""
-  - git:
-      files:
-      - path: apps/**/airflow/config_dir.json
-      repoURL: https://github.com/sudeepgupta90/playwithargo.git
-      requeueAfterSeconds: 20
-      revision: ""
-      template:
-        metadata: {}
-        spec:
-          destination: {}
-          project: ""
-          source:
-            directory:
-              exclude: '{{ exclude }}'
-              include: '{{ include }}'
-              jsonnet: {}
-              recurse: true
-            repoURL: ""
-  syncPolicy: {}
+  # - git:
+  #     files:
+  #     - path: apps/**/airflow/config.json
+  #     repoURL: https://github.com/sudeepgupta90/playwithargo.git
+  #     requeueAfterSeconds: 20
+  #     revision: ""
+  #     template:
+  #       metadata: {}
+  #       spec:
+  #         destination: {}
+  #         project: ""
+  #         source:
+  #           repoURL: ""
+  # - git:
+  #     files:
+  #     - path: apps/**/airflow/config_dir.json
+  #     repoURL: https://github.com/sudeepgupta90/playwithargo.git
+  #     requeueAfterSeconds: 20
+  #     revision: ""
+  #     template:
+  #       metadata: {}
+  #       spec:
+  #         destination: {}
+  #         project: ""
+  #         source:
+  #           directory:
+  #             exclude: '{{ exclude }}'
+  #             include: '{{ include }}'
+  #             jsonnet: {}
+  #             recurse: true
+  #           repoURL: ""
+  - list:
+      elements:
+        - namespace: data-mlp-airflow
+        - namespace: data-ods-airflow
   template:
     metadata:
       labels:
         app.kubernetes.io/managed-by: argocd-autopilot
         app.kubernetes.io/name: '{{ appName }}'
-      name: airflow-{{ userGivenName }}
+      name: '{{namespace}}'
       namespace: argocd
     spec:
       destination:
-        namespace: '{{ destNamespace }}'
-        server: '{{ destServer }}'
+        namespace: '{{namespace}}'
       ignoreDifferences:
       - group: argoproj.io
         jsonPointers:
@@ -82,12 +84,13 @@ spec:
         kind: Application
       project: airflow
       source:
-        path: '{{ srcPath }}'
-        repoURL: '{{ srcRepoURL }}'
-        targetRevision: '{{ srcTargetRevision }}'
+        path: helm-charts/airflow/
+        repoURL: https://github.com/sudeepgupta90/playwithargo.git
+        targetRevision: HEAD
       syncPolicy:
         automated:
           allowEmpty: true
           prune: true
           selfHeal: true
+  syncPolicy: {}
 status: {}
