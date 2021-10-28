@@ -32,41 +32,12 @@ metadata:
   namespace: argocd
 spec:
   generators:
-  # - git:
-  #     files:
-  #     - path: apps/**/airflow/config.json
-  #     repoURL: https://github.com/sudeepgupta90/playwithargo.git
-  #     requeueAfterSeconds: 20
-  #     revision: ""
-  #     template:
-  #       metadata: {}
-  #       spec:
-  #         destination: {}
-  #         project: ""
-  #         source:
-  #           repoURL: ""
-  # - git:
-  #     files:
-  #     - path: apps/**/airflow/config_dir.json
-  #     repoURL: https://github.com/sudeepgupta90/playwithargo.git
-  #     requeueAfterSeconds: 20
-  #     revision: ""
-  #     template:
-  #       metadata: {}
-  #       spec:
-  #         destination: {}
-  #         project: ""
-  #         source:
-  #           directory:
-  #             exclude: '{{ exclude }}'
-  #             include: '{{ include }}'
-  #             jsonnet: {}
-  #             recurse: true
-  #           repoURL: ""
   - list:
       elements:
         - namespace: data-mlp-airflow
+          url: https://kubernetes.default.svc
         - namespace: data-ods-airflow
+          url: https://kubernetes.default.svc
   template:
     metadata:
       labels:
@@ -77,21 +48,14 @@ spec:
     spec:
       destination:
         namespace: '{{namespace}}'
-        server: https://kubernetes.default.svc
-      ignoreDifferences:
-      - group: argoproj.io
-        jsonPointers:
-        - /status
-        kind: Application
+        server: '{{url}}'
       project: airflow
       source:
         path: helm-charts/airflow/
         repoURL: https://github.com/sudeepgupta90/playwithargo.git
         targetRevision: HEAD
-      syncPolicy:
-        automated:
-          allowEmpty: true
-          prune: true
-          selfHeal: true
-  syncPolicy: {}
-status: {}
+        helm: 
+          releaseName: airflow
+          valueFiles:
+          - values.yaml  
+
