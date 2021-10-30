@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: airflowmeta
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - namespace: data-tools-airflow
+      - namespace: data-ods-airflow
+  template:
+    metadata:
+      name: '{{namespace}}-metaapp'
+      namespace: argocd
+    spec:
+      destination:
+        namespace: '{{namespace}}'
+        server: https://kubernetes.default.svc
+      project: airflow
+      source:
+        path: helm-charts/airflow
+        repoURL: 'https://github.com/sudeepgupta90/playwithargo.git'
+        targetRevision: HEAD
+        helm:
+          releaseName: airflow
+          valueFiles:
+            - values.yaml
